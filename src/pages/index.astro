@@ -1,0 +1,144 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DisciplinaCard from '../components/DisciplinaCard.astro';
+import { disciplinas, totalEjercicios } from '../data/disciplinas';
+
+const destacadas = disciplinas.slice(0, 4);
+const total = totalEjercicios();
+
+const caracteristicas = [
+  {
+    icono: '🎯',
+    titulo: 'Precisión del gesto',
+    texto: 'Dibuja trayectorias de golpe, bote o zancada para interiorizar cada fase del movimiento.',
+  },
+  {
+    icono: '🧠',
+    titulo: 'Memoria motora',
+    texto: 'Reproducir la técnica a mano refuerza las conexiones neuronales del patrón correcto.',
+  },
+  {
+    icono: '📈',
+    titulo: 'Progreso visible',
+    texto: 'Guarda tus dibujos y compáralos semana a semana para medir tu evolución.',
+  },
+  {
+    icono: '🖍️',
+    titulo: 'Herramientas completas',
+    texto: 'Pincel, marcador, borrador, guía con transparencia y exportación en PNG.',
+  },
+  {
+    icono: '🌐',
+    titulo: 'Multi-disciplina',
+    texto: 'Fútbol, baloncesto, tenis, natación, atletismo y más con ejercicios específicos.',
+  },
+  {
+    icono: '📱',
+    titulo: 'En cualquier lugar',
+    texto: 'Funciona en ordenador y tableta: dibuja con ratón, dedo o lápiz táctil.',
+  },
+];
+
+const pasos = [
+  { num: '1', titulo: 'Elige tu disciplina', texto: 'Fútbol, tenis, natación… selecciona el deporte que quieres mejorar.' },
+  { num: '2', titulo: 'Observa la referencia', texto: 'Cada ejercicio trae una imagen guía de la técnica (placeholder de ejemplo).' },
+  { num: '3', titulo: 'Dibuja el movimiento', texto: 'Traza el gesto, la trayectoria y las posiciones sobre la guía con tus herramientas.' },
+  { num: '4', titulo: 'Guarda y compara', texto: 'Descarga tu trabajo y repítelo para medir tu progreso.' },
+];
+---
+
+<Layout title="Gestario Sport" description="Sistema de ayuda para mejorar la técnica deportiva en diversas disciplinas por medio de dibujos." dataPage="inicio">
+  <!-- ============ Hero ============ -->
+  <section class="hero">
+    <div class="container hero__inner">
+      <div>
+        <p class="hero__eyebrow">Sistema de entrenamiento visual</p>
+        <h1 class="hero__title">
+          Mejora tu <span class="accent">técnica deportiva</span> dibujando
+        </h1>
+        <p class="hero__lead">
+          Gestario Sport te orienta en diversas disciplinas a través de
+          <strong>dibujos que tú mismo realizas</strong>: trazando gestos, trayectorias y posiciones
+          aprendes a corregir y perfeccionar tu técnica.
+        </p>
+        <div class="hero__actions">
+          <a href="/disciplinas" class="btn btn--primary">Elegir disciplina</a>
+          <a href="/metodo" class="btn btn--ghost-invert">¿Cómo funciona?</a>
+        </div>
+        <ul class="hero__stats">
+          <li><strong>{disciplinas.length}</strong> disciplinas</li>
+          <li><strong>+{total}</strong> ejercicios de dibujo</li>
+          <li><strong>100%</strong> en tu navegador</li>
+        </ul>
+      </div>
+
+      <div class="hero__art">
+        <div class="marco-img shadow-2xl">
+          <img
+            src="/img/placeholder-hero.svg"
+            alt="Placeholder ilustrativo de Gestario Sport"
+            width="600"
+            height="400"
+          />
+        </div>
+        <div class="hero__art-estadisticas">
+          <p class="text-xs font-bold tracking-wide text-slate-300 uppercase">Ejemplo de referencia</p>
+          <p class="text-sm font-semibold text-white">Figura técnica — imagen placeholder</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Características ============ -->
+  <section class="seccion">
+    <div class="container">
+      <h2 class="titulo-seccion">¿Por qué dibujar mejora la técnica?</h2>
+      <p class="lead">
+        El dibujo activa la memoria motora y la conciencia corporal. Ver un gesto y luego
+        reproducirlo con trazo fija el patrón correcto en tu mente.
+      </p>
+      <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {caracteristicas.map((c) => (
+          <article class="card card--hover">
+            <span class="text-3xl" aria-hidden="true">{c.icono}</span>
+            <h3 class="font-display text-lg font-extrabold tracking-tight">{c.titulo}</h3>
+            <p class="text-sm leading-relaxed text-slate-600">{c.texto}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Disciplinas destacadas ============ -->
+  <section class="seccion seccion--tono">
+    <div class="container">
+      <h2 class="titulo-seccion">Disciplinas disponibles</h2>
+      <p class="lead">Cada disciplina incluye ejercicios de dibujo técnico con su imagen guía.</p>
+      <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {destacadas.map((d) => <DisciplinaCard disciplina={d} destacada />)}
+      </div>
+      <div class="mt-10 text-center">
+        <a href="/disciplinas" class="btn btn--primary">Ver todas las disciplinas</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Cómo funciona ============ -->
+  <section class="seccion" id="como-funciona">
+    <div class="container">
+      <h2 class="titulo-seccion">Cómo funciona</h2>
+      <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {pasos.map((p) => (
+          <article class="paso">
+            <span class="paso__num">{p.num}</span>
+            <h3>{p.titulo}</h3>
+            <p>{p.texto}</p>
+          </article>
+        ))}
+      </div>
+      <div class="mt-10 text-center">
+        <a href="/disciplinas" class="btn btn--dark">Ir a los ejercicios de dibujo</a>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,99 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { disciplinas, getDisciplina } from '../../data/disciplinas';
+
+export function getStaticPaths() {
+  return disciplinas.map((d) => ({ params: { slug: d.slug }, props: { disciplina: d } }));
+}
+
+const { disciplina } = Astro.props;
+const { slug, nombre, descripcion, color, icono, imagen, ejercicios } = disciplina;
+---
+
+<Layout
+  title={nombre}
+  description={descripcion}
+  dataPage="disciplinas"
+>
+  <section class="cabecera">
+    <div class="container cabecera__inner">
+      <a href="/disciplinas" class="mb-4 inline-flex items-center gap-1 text-sm font-semibold text-slate-300 hover:text-white">
+        ← Volver a disciplinas
+      </a>
+      <div class="hero__eyebrow">
+        {icono} Categoría: {disciplina.categoria}
+      </div>
+      <h1 class="font-display text-4xl font-black tracking-tight sm:text-5xl">{nombre}</h1>
+      <p class="hero__lead max-w-2xl">{descripcion}</p>
+      <p class="mt-4 text-sm text-slate-400">
+        {ejercicios.length} ejercicios de dibujo técnico · imagen de referencia placeholder
+      </p>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="container">
+      <div class="grid gap-6 lg:grid-cols-[0.9fr_1.4fr]">
+        <!-- Ficha con placeholder -->
+        <div>
+          <div class="marco-img sticky top-24">
+            <img
+              src={imagen}
+              alt={`Placeholder de referencia de ${nombre}`}
+              width="600"
+              height="400"
+            />
+          </div>
+          <p class="mt-3 text-center text-xs text-slate-400 italic">
+            Referencia de técnica — imagen placeholder (public/img/placeholder-{slug}.svg)
+          </p>
+        </div>
+
+        <!-- Lista de ejercicios -->
+        <div class="flex flex-col gap-4">
+          <h2 class="font-display text-2xl font-extrabold tracking-tight">
+            Ejercicios de dibujo
+          </h2>
+
+          {ejercicios.map((e, i) => (
+            <article class="card card--hover">
+              <div class="flex items-start justify-between gap-3">
+                <div class="flex items-center gap-3">
+                  <span
+                    class="font-display flex h-9 w-9 items-center justify-center rounded-xl text-sm font-extrabold text-white"
+                    style={`background-color: ${color}`}
+                  >
+                    {i + 1}
+                  </span>
+                  <div>
+                    <h3 class="font-display text-lg font-extrabold leading-tight">{e.nombre}</h3>
+                    <p class="text-xs font-semibold text-slate-400">{e.objetivo}</p>
+                  </div>
+                </div>
+                <div class="flex shrink-0 flex-col items-end gap-1">
+                  <span class="rounded-full bg-brand-soft px-3 py-1 text-xs font-bold text-brand-600">
+                    ⏱️ {e.duracion} min
+                  </span>
+                  <span class="rounded-full bg-ink/5 px-3 py-1 text-xs font-bold text-ink">
+                    🧩 {e.secuencia.length} posiciones
+                  </span>
+                </div>
+              </div>
+
+              <p class="text-sm leading-relaxed text-slate-600">{e.consigna}</p>
+
+              <div class="mt-auto flex gap-2">
+                <a href={`/entrenamiento/${e.slug}`} class="btn btn--primary btn--sm flex-1">
+                  Lienzo único →
+                </a>
+                <a href={`/entrenamiento/${e.slug}#secuencia`} class="btn btn--ghost btn--sm flex-1">
+                  🧩 Secuencia →
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

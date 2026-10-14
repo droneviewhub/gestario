@@ -1,0 +1,79 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DisciplinaCard from '../components/DisciplinaCard.astro';
+import { disciplinas, totalEjercicios } from '../data/disciplinas';
+
+const categorias = [
+  { key: 'todas', label: 'Todas' },
+  { key: 'pelota', label: 'Pelota' },
+  { key: 'acua', label: 'Acuáticos' },
+  { key: 'atle', label: 'Atletismo' },
+  { key: 'otras', label: 'Otras' },
+];
+---
+
+<Layout
+  title="Disciplinas"
+  description="Explora las disciplinas deportivas de Gestario Sport y sus ejercicios de dibujo para mejorar la técnica."
+  dataPage="disciplinas"
+>
+  <section class="cabecera">
+    <div class="container cabecera__inner">
+      <p class="hero__eyebrow">Catálogo completo</p>
+      <h1 class="font-display text-4xl font-black tracking-tight sm:text-5xl">Disciplinas deportivas</h1>
+      <p class="hero__lead">
+        {disciplinas.length} disciplinas y {totalEjercicios()} ejercicios de dibujo técnico.
+        Selecciona una disciplina para ver sus consignas.
+      </p>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="container">
+      <div class="mb-8 flex flex-wrap gap-2" role="group" aria-label="Filtrar por categoría">
+        {categorias.map((c) => (
+          <button
+            type="button"
+            class:list={['chip', { 'chip--activo': c.key === 'todas' }]}
+            data-filtro={c.key}
+          >
+            {c.label}
+          </button>
+        ))}
+      </div>
+
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-grid-disciplinas>
+        {disciplinas.map((d) => (
+          <div data-tarjeta={d.categoria} class="transition-opacity">
+            <DisciplinaCard disciplina={d} />
+          </div>
+        ))}
+      </div>
+
+      <p class="mt-8 rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-500">
+        📷 Las imágenes de cada tarjeta son <strong>placeholders</strong> ubicados en{' '}
+        <code class="rounded bg-slate-100 px-1.5 py-0.5 text-xs">public/img/placeholder-*.svg</code>.
+        Puedes sustituirlas por fotografías o esquemas técnicos reales manteniendo la misma ruta.
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  // Filtro por categoría (cliente)
+  const botones = document.querySelectorAll('[data-filtro]');
+  const tarjetas = document.querySelectorAll('[data-tarjeta]');
+
+  botones.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const cat = btn.dataset.filtro;
+      botones.forEach((b) => b.classList.toggle('chip--activo', b === btn));
+      tarjetas.forEach((t) => {
+        const coincide = cat === 'todas' || t.dataset.tarjeta === cat;
+        t.classList.toggle('hidden', !coincide);
+        t.classList.toggle('opacity-0', !coincide);
+        t.classList.toggle('scale-95', !coincide);
+      });
+    });
+  });
+</script>

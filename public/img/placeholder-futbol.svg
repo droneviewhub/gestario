@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400" role="img" aria-label="Placeholder: Fútbol">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0ea556"/>
+      <stop offset="1" stop-color="#0b1220"/>
+    </linearGradient>
+    <pattern id="rayas" width="46" height="46" patternUnits="userSpaceOnUse" patternTransform="rotate(18)">
+      <rect width="46" height="46" fill="none"/>
+      <rect width="23" height="46" fill="rgba(255,255,255,0.05)"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="400" fill="url(#bg)"/>
+  <rect width="600" height="400" fill="url(#rayas)"/>
+  <rect x="22" y="22" width="556" height="356" rx="18" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2" stroke-dasharray="10 8"/>
+  <rect x="22" y="22" width="150" height="34" rx="6" fill="rgba(255,255,255,0.12)"/>
+  <text x="97" y="44" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" font-weight="700" letter-spacing="3" fill="#ffffff">PLACEHOLDER</text>
+  <g>
+    <circle cx="300" cy="158" r="56" fill="rgba(255,255,255,0.08)" stroke="#fff" stroke-width="5"/>
+    <path d="M300 104 L337 147 L320 193 L280 193 L263 147 Z" fill="rgba(255,255,255,0.22)" stroke="#fff" stroke-width="4"/>
+    <path d="M300 104 L300 64 M337 147 L378 147 M320 193 L347 235 M280 193 L253 235 M263 147 L222 147" stroke="rgba(255,255,255,0.5)" stroke-width="4" stroke-linecap="round"/></g>
+  <text x="300" y="330" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="40" font-weight="800" letter-spacing="2" fill="#ffffff">FÚTBOL</text>
+  <text x="300" y="362" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" letter-spacing="1" fill="rgba(255,255,255,0.75)">Reemplazar por imagen técnica real</text>
+</svg>

@@ -1,0 +1,33 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  dataPage?: string;
+}
+
+const { title, description = 'Sistema de ayuda para mejorar la técnica deportiva mediante dibujos.', dataPage = 'inicio' } =
+  Astro.props;
+const tituloCompleto = title === 'Gestario Sport' ? title : `${title} — Gestario Sport`;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{tituloCompleto}</title>
+  </head>
+  <body data-page={dataPage}>
+    <Header dataPage={dataPage} />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

@@ -1,0 +1,51 @@
+---
+import type { Disciplina } from '../data/disciplinas';
+
+interface Props {
+  disciplina: Disciplina;
+  destacada?: boolean;
+}
+
+const { disciplina, destacada = false } = Astro.props;
+---
+
+<article class:list={['card', { 'card--hover': true }]}>
+  <div
+    class="marco-img"
+    style={`--color-card: ${disciplina.color}`}
+  >
+    <img
+      src={disciplina.imagen}
+      alt={`Placeholder de la disciplina ${disciplina.nombre}`}
+      loading="lazy"
+      width="600"
+      height="400"
+    />
+  </div>
+
+  <div class="flex items-center justify-between gap-2">
+    <h3 class="font-display text-xl font-extrabold tracking-tight">
+      {disciplina.icono} {disciplina.nombre}
+    </h3>
+    <span
+      class="rounded-full px-2.5 py-1 text-[11px] font-bold tracking-wide uppercase"
+      style={`background: ${disciplina.color}18; color: ${disciplina.color}`}
+    >
+      {disciplina.ejercicios.length} dibujos
+    </span>
+  </div>
+
+  <p class="text-sm leading-relaxed text-slate-600">{disciplina.descripcion}</p>
+
+  {
+    destacada ? (
+      <a href={`/disciplinas/${disciplina.slug}`} class="btn btn--dark btn--sm mt-auto w-full">
+        Explorar ejercicios
+      </a>
+    ) : (
+      <a href={`/disciplinas/${disciplina.slug}`} class="btn btn--ghost btn--sm mt-auto w-full">
+        Ver ejercicios →
+      </a>
+    )
+  }
+</article>

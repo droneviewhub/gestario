@@ -1,0 +1,237 @@
+---
+import type { Disciplina, Ejercicio } from '../data/disciplinas';
+import { COLORES } from '../data/colores';
+
+interface Props {
+  ejercicio: Ejercicio;
+  disciplina: Disciplina;
+}
+
+const { ejercicio, disciplina } = Astro.props;
+
+const HERRAMIENTAS = [
+  { clave: 'lapiz', etiqueta: '✏️ Lápiz' },
+  { clave: 'marcador', etiqueta: '🖊️ Marcador' },
+  { clave: 'borrador', etiqueta: '🧽 Borrador' },
+];
+---
+
+<div class="flex flex-col gap-4" data-secuencia data-slug={ejercicio.slug}>
+  <!-- ===== Cabecera del proceso ===== -->
+  <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <div>
+        <p class="text-xs font-extrabold tracking-widest text-brand-600 uppercase">
+          🧩 Proceso por secuencia
+        </p>
+        <h2 class="font-display mt-1 text-xl font-extrabold tracking-tight" data-titulo-paso-cabecera="">
+          Posiciones clave del gesto
+        </h2>
+        <p class="mt-1 text-sm text-slate-500">
+          Descompón el gesto en {ejercicio.secuencia.length} posiciones clave y dibuja cada una
+          para observarla y comprenderla antes de ejecutarla.
+        </p>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="h-2 w-32 overflow-hidden rounded-full bg-slate-200 sm:w-44">
+          <div data-progreso class="h-full bg-brand transition-all duration-300" style="width: 0%"></div>
+        </div>
+        <span data-contador class="text-xs font-extrabold text-slate-500">0 / {ejercicio.secuencia.length}</span>
+      </div>
+    </div>
+
+    <!-- Stepper -->
+    <ol class="mt-5 flex flex-wrap gap-2" data-stepper aria-label="Posiciones de la secuencia">
+      {ejercicio.secuencia.map((p, i) => (
+        <li>
+          <button
+            type="button"
+            class="stepper-paso"
+            data-ir={i}
+            aria-label={`Ir al paso ${i + 1}: ${p.titulo}`}
+            title={`${i + 1}. ${p.titulo}`}
+          >
+            <span data-stepper-num>{i + 1}</span>
+          </button>
+        </li>
+      ))}
+    </ol>
+  </div>
+
+  <!-- ===== Pasos de la secuencia ===== -->
+  {ejercicio.secuencia.map((p, i) => (
+    <section
+      class="paso-secuencia"
+      data-paso={i}
+      data-titulo-paso={p.titulo}
+      aria-labelledby={`titulo-paso-${i}`}
+    >
+      <header class="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span
+            class="font-display flex h-9 w-9 items-center justify-center rounded-xl text-sm font-extrabold text-white"
+            style={`background-color: ${disciplina.color}`}
+          >
+            {i + 1}
+          </span>
+          <div>
+            <h3 id={`titulo-paso-${i}`} class="font-display text-lg font-extrabold leading-tight">
+              {p.titulo}
+            </h3>
+            <p class="text-sm text-slate-500">
+              <strong class="text-ink">Dibuja:</strong> {p.consigna}
+            </p>
+          </div>
+        </div>
+        <span class="shrink-0 rounded-full bg-brand-soft px-3 py-1 text-xs font-bold text-brand-600">
+          Posición clave {i + 1} de {ejercicio.secuencia.length}
+        </span>
+      </header>
+
+      <!-- Barra de herramientas del paso -->
+      <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <div class="flex flex-wrap items-center gap-x-5 gap-y-3">
+          <div class="flex items-center gap-1.5">
+            {HERRAMIENTAS.map((h, k) => (
+              <button
+                type="button"
+                class:list={['herramienta', { 'herramienta--activa': k === 0 }]}
+                data-herramienta={h.clave}
+              >
+                {h.etiqueta}
+              </button>
+            ))}
+          </div>
+
+          <div class="flex items-center gap-1.5">
+            {COLORES.map((c, k) => (
+              <button
+                type="button"
+                class:list={['swatch', 'swatch--sm', { 'swatch--activa': k === 0 }]}
+                style={`background-color: ${c.hex}; border-color: ${c.hex === '#ffffff' ? '#cbd5e1' : c.hex}`}
+                data-color={c.hex}
+                aria-label={`Color ${c.nombre}`}
+              ></button>
+            ))}
+          </div>
+
+          <label class="flex items-center gap-2 text-xs font-bold text-slate-600">
+            Grosor
+            <input type="range" data-grosor min="1" max="32" value="4" class="h-2 w-24 cursor-pointer appearance-none rounded-full bg-slate-200 accent-brand" />
+            <output data-grosor-val class="font-mono text-slate-700">4</output>
+          </label>
+
+          <div class="flex items-center gap-2">
+            <label class="flex items-center gap-2 text-xs font-bold text-slate-600">
+              Guía
+              <input type="range" data-ref-opacidad min="0" max="100" value="45" class="h-2 w-24 cursor-pointer appearance-none rounded-full bg-slate-200 accent-brand" />
+            </label>
+            <button type="button" class="chip-estudio" data-ref-toggle aria-pressed="true">Ocultar</button>
+          </div>
+
+          <span class="mx-1 hidden h-6 w-px bg-slate-200 sm:block" aria-hidden="true"></span>
+
+          <div class="flex items-center gap-2">
+            <button type="button" class="chip-estudio" data-grid aria-pressed="false" title="Mostrar cuadrícula">⊞</button>
+            <button type="button" class="chip-estudio" data-deshacer disabled>↩</button>
+            <button type="button" class="chip-estudio" data-limpiar>🗑</button>
+            <button type="button" class="chip-estudio" data-exportar>⬇️ PNG</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lienzo del paso -->
+      <div class="lienzo-marco">
+        <img
+          class="lienzo-referencia"
+          src={disciplina.imagen}
+          alt={`Referencia (placeholder) del paso ${i + 1}: ${p.titulo}`}
+          data-ref-img
+          width="600"
+          height="400"
+        />
+        <div class="grid-overlay absolute inset-0 hidden" data-grid-overlay aria-hidden="true"></div>
+        <canvas class="lienzo-principal" data-lienzo data-archivo={`${ejercicio.slug}-paso${i + 1}`} aria-label={`Lienzo de dibujo del paso ${i + 1}`}></canvas>
+      </div>
+    </section>
+  ))}
+
+  <!-- ===== Navegación del proceso ===== -->
+  <nav class="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+    <button type="button" class="btn btn--ghost btn--sm" data-anterior disabled>← Anterior</button>
+    <p class="order-last w-full text-center text-xs text-slate-400 sm:order-none sm:w-auto">
+      Cada paso guarda su dibujo al cambiar. Descarga solo los pasos que hayas abierto.
+    </p>
+    <div class="flex items-center gap-2">
+      <button type="button" class="btn btn--ghost btn--sm" data-descargar-todo title="Descargar los PNG de los pasos ya dibujados">
+        ⤓ Todo
+      </button>
+      <button type="button" class="btn btn--primary btn--sm" data-siguiente>Siguiente →</button>
+    </div>
+  </nav>
+</div>
+
+<script>
+  import { montarLienzo } from '../scripts/lienzo';
+
+  const raiz = document.querySelector('[data-secuencia]');
+  if (raiz) {
+    const pasos = Array.from(raiz.querySelectorAll('[data-paso]'));
+    const stepperBtns = Array.from(raiz.querySelectorAll('[data-ir]'));
+    const tituloCabecera = raiz.querySelector('[data-titulo-paso-cabecera]');
+    const contadorEl = raiz.querySelector('[data-contador]');
+    const progresoEl = raiz.querySelector('[data-progreso]');
+    const btnAnterior = raiz.querySelector('[data-anterior]');
+    const btnSiguiente = raiz.querySelector('[data-siguiente]');
+    const btnTodo = raiz.querySelector('[data-descargar-todo]');
+    const total = pasos.length;
+    const lienzos = new Array(total);
+    const montados = new Array(total).fill(false);
+    let indice = 0;
+
+    function mostrar(i) {
+      indice = Math.max(0, Math.min(total - 1, i));
+      pasos.forEach((p, k) => {
+        if (k === indice) p.dataset.activo = 'true';
+        else delete p.dataset.activo;
+      });
+      stepperBtns.forEach((b, k) => {
+        b.classList.toggle('stepper-paso--activo', k === indice);
+        b.classList.toggle('stepper-paso--hecho', k < indice);
+        const num = b.querySelector('[data-stepper-num]');
+        if (num) num.textContent = k < indice ? '✓' : String(k + 1);
+      });
+      if (tituloCabecera) tituloCabecera.textContent = pasos[indice].dataset.tituloPaso ?? '';
+      if (contadorEl) contadorEl.textContent = `${indice + 1} / ${total}`;
+      if (progresoEl) progresoEl.style.width = `${((indice + 1) / total) * 100}%`;
+      if (btnAnterior) btnAnterior.disabled = indice === 0;
+      if (btnSiguiente) btnSiguiente.textContent = indice === total - 1 ? '✓ Completar' : 'Siguiente →';
+      if (!montados[indice]) {
+        lienzos[indice] = montarLienzo(pasos[indice], `${raiz.dataset.slug ?? 'dibujo'}-paso${indice + 1}`);
+        montados[indice] = true;
+      }
+      requestAnimationFrame(() => {
+        lienzos[indice]?.redimensionar();
+        window.dispatchEvent(new CustomEvent('gestario:redimensionar'));
+      });
+      const top = pasos[indice].getBoundingClientRect().top + window.scrollY - 96;
+      // Solo auto-desplaza si la secuencia está visible (p. ej. al abrir #secuencia)
+      if (raiz.offsetParent !== null) window.scrollTo({ top, behavior: 'smooth' });
+    }
+
+    btnAnterior?.addEventListener('click', () => mostrar(indice - 1));
+    btnSiguiente?.addEventListener('click', () =>
+      indice === total - 1 ? mostrar(0) : mostrar(indice + 1)
+    );
+    stepperBtns.forEach((b) => b.addEventListener('click', () => mostrar(Number(b.dataset.ir))));
+    btnTodo?.addEventListener('click', () => {
+      for (let k = 0; k < total; k++) {
+        if (montados[k] && lienzos[k]) {
+          setTimeout(() => lienzos[k].exportar(), k * 450);
+        }
+      }
+    });
+
+    mostrar(0);
+  }
+</script>

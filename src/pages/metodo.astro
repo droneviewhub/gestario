@@ -1,0 +1,135 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { disciplinas, totalEjercicios } from '../data/disciplinas';
+
+const pilares = [
+  {
+    icono: '👁️',
+    titulo: 'Observación guiada',
+    texto:
+      'Cada ejercicio parte de una imagen guía con la técnica correcta. El deportista estudia las posiciones, ángulos y trayectorias antes de plasmar nada.',
+  },
+  {
+    icono: '✍️',
+    titulo: 'Reproducción por trazo',
+    texto:
+      'Trazar el gesto obliga a la mente a descomponer el movimiento en fases (preparación, ejecución, recuperación) y a fijar cada una de ellas.',
+  },
+  {
+    icono: '🧩',
+    titulo: 'Corrección consciente',
+    texto:
+      'Decidir dónde trazar una línea o un ángulo equivocado hace visible el error. Corregirlo a mano ayuda a corregirlo también en el cuerpo.',
+  },
+  {
+    icono: '🔁',
+    titulo: 'Repetición y comparación',
+    texto:
+      'Guardar los dibujos permite comparar versiones y comprobar que los patrones del gesto se acercan cada vez más al modelo ideal.',
+  },
+];
+
+const beneficios = [
+  'Descompone cada gesto deportivo en posiciones clave para observarlas y comprenderlas una a una.',
+  'Activa la memoria motora y la imaginería mental, usadas en el deporte de alto rendimiento.',
+  'Mejora la conciencia corporal y la lectura de la propia postura.',
+  'Fomenta la concentración y la paciencia en el aprendizaje técnico.',
+  'Permite entrenar fuera del campo, en casa o en desplazamientos.',
+  'Funciona como material de autoevaluación para el deportista y su entrenador.',
+  'Es motivador: el progreso se ve dibujo a dibujo.',
+];
+
+const buenasPracticas = [
+  { titulo: 'Con la referencia visible', texto: 'Primera fase: traza el gesto siguiendo la guía con transparencia media para copiar los trazos clave.' },
+  { titulo: 'Referencia oculta', texto: 'Segunda fase: dibuja el movimiento de memoria y compáralo después con la guía activándola de nuevo.' },
+  { titulo: 'Referencia al 0%', texto: 'Tercera fase: dibujo libre con la guía apagada y autoevaluación a partir de la propia memoria del gesto.' },
+  { titulo: 'Proceso por secuencia', texto: 'Descompón el gesto en posiciones clave y dibuja cada una paso a paso con el modo secuencia de cada ejercicio. Así observas cada fase y la comprendes por separado.' },
+  { titulo: 'Compara versiones', texto: 'Repite el mismo ejercicio días después y exporta ambos PNG para visualizar tu evolución.' },
+];
+---
+
+<Layout
+  title="El método"
+  description="Descubre el método de dibujo técnico de Gestario Sport para mejorar la técnica deportiva."
+  dataPage="metodo"
+>
+  <section class="cabecera">
+    <div class="container cabecera__inner">
+      <p class="hero__eyebrow">Nuestro enfoque</p>
+      <h1 class="font-display text-4xl font-black tracking-tight sm:text-5xl">El método del dibujo técnico</h1>
+      <p class="hero__lead max-w-2xl">
+        En el deporte no solo se aprende con el cuerpo: también se aprende con los ojos y con la mano.
+        El dibujo técnico convierte un gesto invisible en un trazo que puedes corregir.
+      </p>
+    </div>
+  </section>
+
+  <!-- Pilares -->
+  <section class="seccion">
+    <div class="container">
+      <h2 class="titulo-seccion">Cuatro pilares</h2>
+      <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {pilares.map((p) => (
+          <article class="card card--hover">
+            <span class="text-3xl" aria-hidden="true">{p.icono}</span>
+            <h3 class="font-display text-lg font-extrabold tracking-tight">{p.titulo}</h3>
+            <p class="text-sm leading-relaxed text-slate-600">{p.texto}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Metodología en fases -->
+  <section class="seccion seccion--tono">
+    <div class="container grid gap-10 lg:grid-cols-[1fr_1fr]">
+      <div>
+        <h2 class="titulo-seccion">Práctica en tres fases</h2>
+        <p class="lead">El bucle de entrenamiento de cada ejercicio usa la referencia de la técnica como apoyo pedagógico.</p>
+        <ol class="mt-8 flex flex-col gap-4">
+          {buenasPracticas.map((b, i) => (
+            <li class="flex gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <span class="font-display flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-ink text-sm font-extrabold text-white">
+                {i + 1}
+              </span>
+              <div>
+                <h3 class="font-display font-extrabold">{b.titulo}</h3>
+                <p class="text-sm leading-relaxed text-slate-600">{b.texto}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <div>
+        <h2 class="titulo-seccion">Beneficios</h2>
+        <ul class="mt-8 flex flex-col gap-3">
+          {beneficios.map((b) => (
+            <li class="flex items-start gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+              <span class="mt-0.5 text-brand" aria-hidden="true">✔️</span>
+              <span class="text-sm leading-relaxed text-slate-700">{b}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="seccion">
+    <div class="container">
+      <div class="rounded-3xl bg-ink p-8 text-center text-white sm:p-12">
+        <h2 class="font-display text-3xl font-black tracking-tight">
+          Listo para trazar tu mejora técnica
+        </h2>
+        <p class="mx-auto mt-3 max-w-xl text-slate-300">
+          {disciplinas.length} disciplinas y {totalEjercicios()} ejercicios listos para dibujar.
+          Solo necesitas un navegador y ganas de mejorar.
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <a href="/disciplinas" class="btn btn--primary">Elegir disciplina</a>
+          <a href="/disciplinas/atletismo" class="btn btn--ghost-invert">Prueba un ejemplo</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

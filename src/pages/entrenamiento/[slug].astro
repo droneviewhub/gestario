@@ -1,0 +1,108 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import EstudioDibujo from '../../components/EstudioDibujo.astro';
+import ProcesoSecuencia from '../../components/ProcesoSecuencia.astro';
+import { disciplinas } from '../../data/disciplinas';
+
+export function getStaticPaths() {
+  return disciplinas.flatMap((disciplina) =>
+    disciplina.ejercicios.map((e) => ({
+      params: { slug: e.slug },
+      props: { ejercicio: e, disciplina },
+    }))
+  );
+}
+
+const { ejercicio, disciplina } = Astro.props;
+
+const modos = [
+  { clave: 'unico', etiqueta: '🖼️ Lienzo único', descripcion: 'Dibuja el gesto completo sobre una sola referencia.' },
+  { clave: 'secuencia', etiqueta: '🧩 Proceso por secuencia', descripcion: 'Descompón el gesto en posiciones clave y dibuja cada una paso a paso.' },
+];
+---
+
+<Layout
+  title={ejercicio.nombre}
+  description={`Ejercicio de dibujo técnico: ${ejercicio.consigna}. Modo lienzo único y proceso por secuencia.`}
+  dataPage="disciplinas"
+>
+  <section class="seccion">
+    <div class="container">
+      <a
+        href={`/disciplinas/${disciplina.slug}`}
+        class="mb-6 inline-flex items-center gap-1 text-sm font-semibold text-slate-500 hover:text-brand-600"
+      >
+        ← Volver a {disciplina.nombre}
+      </a>
+
+      <!-- Pestañas de modo -->
+      <div class="mb-6 grid gap-3 sm:grid-cols-2" role="tablist" aria-label="Modo de trabajo">
+        {modos.map((m, i) => (
+          <button
+            type="button"
+            role="tab"
+            aria-selected={i === 0 ? 'true' : 'false'}
+            class:list={['pestania', { 'pestania--activa': i === 0 }]}
+            data-modo={m.clave}
+          >
+            <span class="block font-display text-base font-extrabold">{m.etiqueta}</span>
+            <span class:list={['block text-xs font-semibold', i === 0 ? 'text-slate-200' : 'text-slate-500']}>
+              {m.descripcion}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      <!-- Lienzo único -->
+      <section data-vista="unico">
+        <EstudioDibujo ejercicio={ejercicio} disciplina={disciplina} />
+      </section>
+
+      <!-- Proceso por secuencia -->
+      <section data-vista="secuencia" class="hidden">
+        <ProcesoSecuencia ejercicio={ejercicio} disciplina={disciplina} />
+      </section>
+
+      <div class="mt-6 rounded-2xl border border-slate-200 bg-white p-5 text-sm text-slate-500 shadow-sm">
+        <p>
+          📷 <strong>Recuerda:</strong> la imagen de referencia es un <strong>placeholder</strong>
+          (public/img/placeholder-{disciplina.slug}.svg). Cámbiala por un esquema técnico real del
+          gesto manteniendo el mismo nombre y ruta para que el estudio la use automáticamente.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  // Cambio entre "Lienzo único" y "Proceso por secuencia"
+  const modos = document.querySelectorAll('[data-modo]');
+  const vistas = new Map([
+    ['unico', document.querySelector('[data-vista="unico"]')],
+    ['secuencia', document.querySelector('[data-vista="secuencia"]')],
+  ]);
+
+  function activarModo(clave) {
+    modos.forEach((btn) => {
+      const activo = btn.dataset.modo === clave;
+      btn.classList.toggle('pestania--activa', activo);
+      btn.setAttribute('aria-selected', String(activo));
+      const span = btn.querySelector('span:last-of-type');
+      if (span) span.classList.toggle('text-slate-200', activo);
+    });
+    vistas.forEach((v, k) => v?.classList.toggle('hidden', k !== clave));
+    // Recalcula el tamaño de los lienzos visibles
+    requestAnimationFrame(() => {
+      window.dispatchEvent(new CustomEvent('gestario:redimensionar'));
+      const vista = vistas.get(clave);
+      vista?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
+  modos.forEach((btn) => {
+    btn.addEventListener('click', () => activarModo(btn.dataset.modo));
+  });
+
+  // Soporte de ancla: /entrenamiento/<slug>#secuencia abre directamente el proceso
+  activarModo(location.hash === '#secuencia' ? 'secuencia' : 'unico');
+</script>

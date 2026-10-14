@@ -1,0 +1,387 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Tema Gestario Sport (Tailwind v4, configuración en CSS)
+   ============================================================ */
+@theme {
+  --color-ink: #0b1220;        /* fondo oscuro principal */
+  --color-ink-2: #101a30;      /* superficie oscura */
+  --color-ink-3: #1b2740;      /* borde oscuro */
+  --color-paper: #f2f4fa;      /* fondo claro */
+  --color-brand: #ff7a3d;      /* acento principal */
+  --color-brand-600: #f2641f;
+  --color-brand-soft: #ffe9dc;
+  --color-cyan-brand: #22d3ee;
+  --color-lime-brand: #a3e635;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Sora", "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-xl2: 1.25rem;
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-paper text-ink font-sans antialiased;
+}
+
+::selection {
+  background: var(--color-brand);
+  color: #fff;
+}
+
+/* ============================================================
+   Utilidades reutilizables
+   ============================================================ */
+.container {
+  @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+}
+
+.titulo-seccion {
+  @apply font-display text-2xl font-extrabold tracking-tight sm:text-3xl;
+}
+
+.lead {
+  @apply mt-3 text-base text-slate-600 sm:text-lg;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-bold transition-all duration-200 select-none;
+}
+
+.btn--primary {
+  @apply bg-brand text-white shadow-lg shadow-orange-500/25 hover:-translate-y-0.5 hover:shadow-orange-500/40;
+}
+
+.btn--dark {
+  @apply bg-ink text-white hover:bg-ink-3;
+}
+
+.btn--ghost {
+  @apply border border-slate-300 bg-white/60 text-ink hover:border-brand hover:text-brand-600;
+}
+
+.btn--ghost-invert {
+  @apply border border-white/40 bg-white/10 text-white hover:bg-white/20;
+}
+
+.btn--sm {
+  @apply px-4 py-2 text-xs;
+}
+
+/* Tarjetas */
+.card {
+  @apply flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-200;
+}
+
+.card--hover {
+  @apply hover:-translate-y-1 hover:border-brand/40 hover:shadow-xl hover:shadow-slate-900/10;
+}
+
+/* Chips de filtro */
+.chip {
+  @apply rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-600 transition-all cursor-pointer;
+}
+
+.chip--activo {
+  @apply border-ink bg-ink text-white;
+}
+
+.chip:hover {
+  @apply border-brand text-brand-600;
+}
+
+/* Marco de imagen respetando el aspecto del placeholder */
+.marco-img {
+  @apply relative w-full overflow-hidden rounded-2xl border border-slate-200 bg-ink;
+  aspect-ratio: 3 / 2;
+}
+
+.marco-img img {
+  @apply absolute inset-0 h-full w-full object-cover;
+}
+
+/* ============================================================
+   Header
+   ============================================================ */
+.topbar {
+  @apply sticky top-0 z-40 border-b border-white/10 bg-ink/90 backdrop-blur;
+}
+
+.topbar__inner {
+  @apply flex items-center justify-between py-4;
+}
+
+.brand {
+  @apply flex items-center gap-2.5 font-display text-xl font-extrabold tracking-tight text-white;
+}
+
+.brand em {
+  @apply not-italic text-brand;
+}
+
+.nav {
+  @apply flex items-center gap-1;
+}
+
+.nav__link {
+  @apply rounded-lg px-3 py-2 text-sm font-semibold text-slate-300 transition-colors hover:text-white;
+}
+
+.nav__link--activo {
+  @apply bg-white/10 text-brand;
+}
+
+/* ============================================================
+   Hero
+   ============================================================ */
+.hero {
+  @apply relative isolate overflow-hidden bg-ink text-white;
+  background-image:
+    radial-gradient(60rem 30rem at 85% -10%, rgba(255, 122, 61, 0.28), transparent 60%),
+    radial-gradient(50rem 28rem at 0% 110%, rgba(34, 211, 238, 0.18), transparent 60%);
+}
+
+.hero__inner {
+  @apply grid items-center gap-10 py-16 sm:py-24 lg:grid-cols-[1.1fr_0.9fr];
+}
+
+.hero__eyebrow {
+  @apply mb-3 inline-flex items-center gap-2 rounded-full border border-brand/40 bg-brand/10 px-4 py-1.5 text-xs font-bold tracking-widest text-brand uppercase;
+}
+
+.hero__title {
+  @apply font-display text-4xl leading-[1.05] font-black tracking-tight sm:text-5xl lg:text-6xl;
+}
+
+.hero__lead {
+  @apply mt-5 max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg;
+}
+
+.hero__lead strong {
+  @apply text-white;
+}
+
+.accent {
+  @apply text-transparent;
+  background-image: linear-gradient(90deg, var(--color-brand), var(--color-cyan-brand));
+  background-clip: text;
+}
+
+.hero__actions {
+  @apply mt-8 flex flex-wrap gap-3;
+}
+
+.hero__stats {
+  @apply mt-10 flex flex-wrap gap-x-8 gap-y-2 text-sm text-slate-400;
+}
+
+.hero__stats strong {
+  @apply font-display text-lg font-extrabold text-white;
+}
+
+.hero__art {
+  @apply relative;
+}
+
+.hero__art-estadisticas {
+  @apply absolute -bottom-5 -left-5 z-10 rounded-2xl border border-white/10 bg-ink-2 px-5 py-4 shadow-2xl backdrop-blur;
+}
+
+/* ============================================================
+   Secciones
+   ============================================================ */
+.seccion {
+  @apply py-16 sm:py-20;
+}
+
+.seccion--tono {
+  @apply bg-white;
+}
+
+.seccion--oscura {
+  @apply bg-ink text-white;
+}
+
+/* Pasos (cómo funciona) */
+.paso {
+  @apply relative flex flex-col gap-2 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm;
+}
+
+.paso__num {
+  @apply font-display flex h-10 w-10 items-center justify-center rounded-xl bg-brand text-lg font-extrabold text-white shadow-lg shadow-orange-500/30;
+}
+
+.paso h3 {
+  @apply font-display text-lg font-extrabold;
+}
+
+.paso p {
+  @apply text-sm leading-relaxed text-slate-600;
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.footer {
+  @apply border-t border-white/10 bg-ink text-slate-400;
+}
+
+.footer__inner {
+  @apply flex flex-col gap-3 py-8 text-sm;
+}
+
+.footer strong {
+  @apply text-white;
+}
+
+.footer__nota {
+  @apply text-xs text-slate-500 italic;
+}
+
+/* ============================================================
+   Cabecera de páginas internas
+   ============================================================ */
+.cabecera {
+  @apply bg-ink text-white;
+  background-image:
+    radial-gradient(40rem 20rem at 80% -20%, rgba(255, 122, 61, 0.22), transparent 60%),
+    radial-gradient(30rem 18rem at 10% 130%, rgba(34, 211, 238, 0.14), transparent 60%);
+}
+
+.cabecera__inner {
+  @apply py-14 sm:py-20;
+}
+
+/* ============================================================
+   Estudio de dibujo
+   ============================================================ */
+.estudio {
+  @apply flex flex-col gap-6 lg:flex-row;
+}
+
+.estudio__panel {
+  @apply flex flex-col gap-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm lg:w-72 lg:shrink-0;
+}
+
+.estudio__panel h3 {
+  @apply font-display text-xs font-extrabold tracking-widest text-slate-500 uppercase;
+}
+
+.herramienta {
+  @apply flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 transition-all;
+}
+
+.herramienta--activa {
+  @apply border-brand bg-brand-soft text-brand-600;
+}
+
+.swatch {
+  @apply h-8 w-8 rounded-full border-2 border-white shadow cursor-pointer transition-transform hover:scale-110;
+}
+
+.swatch--activa {
+  @apply scale-110 ring-2 ring-ink ring-offset-2;
+}
+
+/* Lienzo */
+.lienzo-marco {
+  @apply relative w-full overflow-hidden rounded-2xl border-2 border-slate-200 bg-white shadow-sm;
+  aspect-ratio: 4 / 3;
+  touch-action: none;
+}
+
+.lienzo-marco img.lienzo-referencia {
+  @apply absolute inset-0 h-full w-full object-contain;
+  pointer-events: none;
+}
+
+.lienzo-principal {
+  @apply absolute inset-0 h-full w-full;
+  touch-action: none;
+}
+
+.grid-overlay {
+  background-image:
+    linear-gradient(to right, rgba(11, 18, 32, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(11, 18, 32, 0.06) 1px, transparent 1px);
+  background-size: 12.5% 12.5%;
+}
+
+.chip-estudio {
+  @apply rounded-full border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold text-slate-600 transition-all cursor-pointer;
+}
+
+.chip-estudio--activo {
+  @apply border-ink bg-ink text-white;
+}
+
+/* Cintas de datos */
+.barra-datos {
+  @apply flex flex-wrap gap-3;
+}
+
+.dato {
+  @apply rounded-xl border border-white/10 bg-white/5 px-4 py-3;
+}
+
+.dato strong {
+  @apply block font-display text-2xl font-extrabold text-white;
+}
+
+.dato span {
+  @apply text-xs tracking-wide text-slate-400 uppercase;
+}
+
+/* ============================================================
+   Pestanas de modo (lienzo único / secuencia)
+   ============================================================ */
+.pestania {
+  @apply cursor-pointer rounded-xl border border-slate-200 bg-white px-5 py-3 text-left text-sm font-bold text-slate-500 transition-all select-none;
+}
+
+.pestania--activa {
+  @apply border-transparent bg-ink text-white shadow-lg;
+}
+
+/* ============================================================
+   Proceso por secuencia
+   ============================================================ */
+.stepper-paso {
+  @apply flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border-2 border-slate-300 bg-white text-sm font-extrabold text-slate-500 transition-all hover:border-brand hover:text-brand-600;
+}
+
+.stepper-paso--activo {
+  @apply border-brand bg-brand text-white shadow-lg shadow-orange-500/30 scale-110;
+}
+
+.stepper-paso--hecho {
+  @apply border-brand bg-brand-soft text-brand-600;
+}
+
+.paso-secuencia {
+  display: none;
+  flex-direction: column;
+  gap: 1rem;
+  scroll-margin-top: 6rem;
+}
+
+.paso-secuencia[data-activo='true'] {
+  display: flex;
+}
+
+/* Swatches pequeñas para los pasos de secuencia */
+.swatch--sm {
+  @apply h-7 w-7;
+}
+
+.swatch--sm.swatch--activa {
+  @apply ring-2 ring-ink ring-offset-2;
+}
